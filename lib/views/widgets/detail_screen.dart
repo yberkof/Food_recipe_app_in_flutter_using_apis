@@ -70,3 +70,4 @@ class _DetailScreenState extends State<DetailScreen> {
         fontWeight: fontWeight ?? FontWeight.normal);
   }
 }
+//
