@@ -1,34 +1,30 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe_app/views/widgets/detail_screen.dart';
 
-class RecipeCard extends StatelessWidget {
-  final String title;
-  final String rating;
-  final String cookTime;
-  final String thumbnailUrl;
-  RecipeCard({
+import '../../models/recipe.dart';
 
-    required this.title,
-    required this.cookTime,
-    required this.rating,
-    required this.thumbnailUrl,
-  });
+class RecipeCard extends StatelessWidget {
+  final Recipe _model;
+
+  RecipeCard(this._model);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap:(){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => DetailScreen()));
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => DetailScreen(this._model)));
       },
       child: Container(
-
         margin: EdgeInsets.symmetric(horizontal: 22, vertical: 10),
         width: MediaQuery.of(context).size.width,
-
         height: 180,
         decoration: BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.circular(15),
-
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.6),
@@ -42,22 +38,22 @@ class RecipeCard extends StatelessWidget {
           ],
           image: DecorationImage(
             colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.35),
+              Colors.black.withOpacity(0.7),
               BlendMode.multiply,
             ),
-            image: NetworkImage(thumbnailUrl),
+            image: CachedNetworkImageProvider(
+              this._model.image,
+            ),
             fit: BoxFit.cover,
           ),
         ),
         child: Stack(
-
           children: [
-
             Align(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5.0),
                 child: Text(
-                  title,
+                  this._model.name,
                   style: TextStyle(
                     fontSize: 19,
                   ),
@@ -87,15 +83,14 @@ class RecipeCard extends StatelessWidget {
                           size: 18,
                         ),
                         SizedBox(width: 7),
-                        Text(rating),
+                        Text(this._model.rating.toString()),
+                        SizedBox(width: 7),
                       ],
                     ),
                   ),
                   Container(
-
                     padding: EdgeInsets.all(5),
                     margin: EdgeInsets.all(10),
-
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.4),
                       borderRadius: BorderRadius.circular(15),
@@ -108,7 +103,8 @@ class RecipeCard extends StatelessWidget {
                           size: 18,
                         ),
                         SizedBox(width: 7),
-                        Text(cookTime),
+                        Text(this._model.totalTime),
+                        SizedBox(width: 7),
                       ],
                     ),
                   )
